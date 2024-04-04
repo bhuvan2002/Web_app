@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Browser</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: #f0f0f0;
+        }
+        .url-bar {
+            flex: 1;
+            margin-right: 10px;
+            padding: 5px;
+        }
+        .go-button {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .close-button {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .browser {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-bar">
+            <input type="text" class="url-bar" placeholder="Enter URL">
+            <button class="go-button">Go</button>
+            <!-- Close button added -->
+            <button class="close-button">Close</button>
+        </div>
+        <div class="browser">
+            <iframe id="browser-frame" frameborder="0" width="100%" height="100%"></iframe>
+        </div>
+    </div>
+
+    <script>
+        let isCloseClicked = false; // Flag variable to track close button click
+
+        document.querySelector('.go-button').addEventListener('click', function() {
+            var url = document.querySelector('.url-bar').value;
+            if (!url.startsWith('http')) {
+                url = 'http://' + url;
+            }
+            document.getElementById('browser-frame').src = url;
+        });
+
+        // Close button event listener
+        document.querySelector('.close-button').addEventListener('click', function() {
+            isCloseClicked = true; // Set flag to true when close button is clicked
+            window.close(); // Close the browser window
+        });
+
+        // Event listener to prevent switching tabs
+        window.addEventListener('keydown', function(event) {
+            if (event.altKey && event.key === 'Tab' && !isCloseClicked) {
+                event.preventDefault();
+                console.log('Alt + Tab prevented');
+            }
+        });
+    </script>
+</body>
+</html>
